@@ -71,7 +71,7 @@ echo x[3].value  # Outputs: 8
 
 ### Finding Insertion Index
 
-Use `insertIndexFor` to find the index where a new item should be inserted to maintain chronological order.
+Use `insertIndexFor` to find the index where a new item should be inserted to maintain chronological order. This is useful for finding items that are near each other in time.
 
 ```nim
 let index = x.insertIndexFor(TimeStamp[int](value: 99, time: initDateTime(2024, mFeb, 15)))
