@@ -133,7 +133,7 @@ This library is agnostic to the implementation of a time type, so you can use th
 
 ## License
 
-This project is licensed under the WTFPL License. See the [LICENSE](license.txt) file for details.
+This project is licensed under the WTFPL License. See the [LICENSE](license.txt) file for details. This is free software. It comes without any warranty, to the extent permitted by applicable law.
 
 ## Contributing
 
