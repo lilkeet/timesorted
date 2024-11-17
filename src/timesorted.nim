@@ -76,24 +76,35 @@ func delete*[T](host: var TimeSortedSeq[T]; index: int) {.inline.} =
      This is an O(n) operation.]##
   host.data.delete index
 
+proc find*[T; S](host: TimeSortedSeq[T]; time: S): int {.inline.} =
+  ## Returns the index that `time` is at or `-1` if it is not present.
+  ##
+  ## Requires that there is some proc, func, template, or macro called
+  ## `timeGetter` for type `T` that returns some `DateTime`-like type.
+  mixin timeGetter
+
+  when not compiles(timeGetter(default(T))):
+    {.error: "Please implement a proc, func, template, or macro called " &
+       "`timeGetter` for your type that returns some datatype that " &
+       "represents a point in time before using a TimeSortedSeq.".}
+  else:
+    when timeGetter(default(T)) isnot S:
+      {.error: "The `time` param must match the `timeGetter` return type.".}
+
+  proc myCmp(x: T; y: S): int =
+    if timeGetter(x) == y: return 0
+    if timeGetter(x) < y: return -1
+    return 1
+
+  result = host.toSeq.binarySearch(time, myCmp)
+
 proc find*[T](host: TimeSortedSeq[T]; val: T): int {.inline.} =
   ## Returns the index that `val` is at or `-1` if it is not present.
   ##
   ## Requires that there is some proc, func, template, or macro called
   ## `timeGetter` for type `T` that returns some `DateTime`-like type.
   mixin timeGetter
-
-  when not compiles(timeGetter(val)):
-    {.error: "Please implement a proc, func, template, or macro called " &
-       "`timeGetter` for your type that returns some datatype that " &
-       "represents a point in time before using a TimeSortedSeq.".}
-
-  proc myCmp(x, y: T): int =
-    if timeGetter(x) == timeGetter(y): return 0
-    if timeGetter(x) < timeGetter(y): return -1
-    return 1
-
-  result = host.toSeq.binarySearch(val, myCmp)
+  result = host.find(timeGetter(val))
 
 
 iterator items*[T](host: TimeSortedSeq[T]): lent T =
