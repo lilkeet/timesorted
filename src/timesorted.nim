@@ -69,6 +69,13 @@ proc insertIndexFor*[T](host: TimeSortedSeq[T]; potentialNewVal: T): int =
 proc add*[T](host: var TimeSortedSeq[T]; newVal: sink T) {.inline.} =
   host.data.insert newVal, host.insertIndexFor(newVal)
 
+func delete*[T](host: var TimeSortedSeq[T]; index: int) {.inline.} =
+  ##[Deletes the item at index i by moving all x[i+1..^1] items by one
+     position.
+
+     This is an O(n) operation.]##
+  host.data.delete index
+
 proc find*[T](host: TimeSortedSeq[T]; val: T): int {.inline.} =
   ## Returns the index that `val` is at or `-1` if it is not present.
   ##
