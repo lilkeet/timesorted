@@ -48,3 +48,12 @@ for item in x:
 
 for index, item in x:
   doAssert ValuesInOrder[index] == item.value
+
+
+x.delete 1
+
+doAssert x.len == 3
+
+doAssert x[0].value == 7
+doAssert x[1].value == 9
+doAssert x[2].value == 8
