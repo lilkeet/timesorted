@@ -40,7 +40,7 @@ func high*(host: TimeSortedSeq): int {.inline.} =
   host.data.high
 
 
-proc insertIndexFor*[T; S](host: TimeSortedSeq[T]; time: S): int =
+proc insertIndexFor*[T; S: not T](host: TimeSortedSeq[T]; time: S): int =
   ## Returns the index that any value with `time` would be inserted at.
   ##
   ## Requires that there is some proc, func, template, or macro called
@@ -89,7 +89,7 @@ func delete*[T](host: var TimeSortedSeq[T]; index: int) {.inline.} =
      This is an O(n) operation.]##
   host.data.delete index
 
-proc find*[T; S](host: TimeSortedSeq[T]; time: S): int {.inline.} =
+proc find*[T; S: not T](host: TimeSortedSeq[T]; time: S): int {.inline.} =
   ## Returns the index that `time` is at or `-1` if it is not present.
   ##
   ## Requires that there is some proc, func, template, or macro called
